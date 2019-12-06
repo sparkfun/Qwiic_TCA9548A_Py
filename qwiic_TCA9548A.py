@@ -77,7 +77,7 @@ class QwiicTCA9548A(object):
 						used.
 	:param i2c_driver:	An existing i2c driver object. If not
 						provided a driver object is created.
-	
+
 	:return:			Constructor Initialization
 						True-	Successful
 						False-	Issue loading I2C driver
@@ -92,13 +92,9 @@ class QwiicTCA9548A(object):
 	# Available Addresses:
 	available_addresses = _AVAILABLE_I2C_ADDRESS
 
-	#----------------------------------------------
+    #----------------------------------------------
 	# Available Channels:
 	available_channels = [*range(0,7+1)]
-
-	#----------------------------------------------
-	# Enabled Channels:
-	enabled_channels = 0
 
 	#----------------------------------------------
 	# Constructor
@@ -129,7 +125,7 @@ class QwiicTCA9548A(object):
 		# Load the I2C driver if one isn't provided
 		if i2c_driver == None:
 			self._i2c = qwiic_i2c.getI2CDriver()
-	
+
 			if self._i2c == None:
 				print("Unable to load I2C driver for this platform.")
 				return
@@ -142,9 +138,8 @@ class QwiicTCA9548A(object):
 		else:
 			self.debug = debug	# Debug Statements Enabled (1)
 
-		# Disable all channels
-		enabled_channels = qwiic_i2c.writeCommand(self.address, 0x00)
 
+    #--------------------------------------------------------------------------
 	def is_connected(self):
 		"""
 			Determine if the device is conntected to the system.
@@ -152,17 +147,25 @@ class QwiicTCA9548A(object):
 			:rtype: bool
 		"""
 		return qwiic_i2c.isDeviceConnected(self.address)
-	
+
 	connected = property(is_connected)
 
 
 	def enable_channels(self, enable):
-
-		command = self.enabled_channels
+		"""
+		This method enables the connection of specific channels on the
+		Qwiic Mux.
+		:param enable:		Channel(s) to enable on the Qwiic Mux. Input
+							must be either an individual integer or
+							list. The method will automatically convert
+							an individual integer into a list.
+							Range- 0 to 7
+		"""
+		command = self._i2c.readByte(self.address)
 
 		# If entry is an integer and not a list; turn it into a list of (1)
 		if type(enable) is not list: enable = [ enable ]
-		
+
 		# Iterate through list
 		for entry in enable:
 			if type(entry) != int:
@@ -172,17 +175,24 @@ class QwiicTCA9548A(object):
 			else:
 				# Set bit to 1
 				command = command | (1<<entry)
-		
-		self._i2c.writeCommand(self.address, command)
-		self.enabled_channels = command
-	
-	def disable_channels(self, disable):
 
-		command = self.enabled_channels
+		self._i2c.writeCommand(self.address, command)
+
+	def disable_channels(self, disable):
+		"""
+		This method disables the connection of specific channels on the
+		Qwiic Mux.
+		:param enable:		Channel(s) to disable on the Qwiic Mux.
+							Input must be either an individual integer
+							or list. The method will automatically
+							convert an individual integer into a list.
+							Range- 0 to 7
+		"""
+		command = self._i2c.readByte(self.address)
 
 		# If entry is an integer and not a list; turn it into a list of (1)
 		if type(disable) is not list: disable = [ disable ]
-		
+
 		# Iterate through list
 		for entry in disable:
 			if type(entry) != int:
@@ -191,27 +201,40 @@ class QwiicTCA9548A(object):
 				print("Entries must be in range of available channels (0-7).")
 			else:
 				# Clear bit to 0
-				command = command & ~(1<<entry)
-		
+				command = command & ~(1 << entry)
+
 		self._i2c.writeCommand(self.address, command)
-		self.enabled_channels = command
 
 	def enable_all(self):
+		"""
+		This method enables the connection of specific channels on the
+		Qwiic Mux.
+		"""
+
 		# Enable all channels
 		self._i2c.writeCommand(self.address, 0xFF)
-		self.enabled_channels = 0xFF
 
 	def disable_all(self):
+		"""
+		This method disables the connection of all channels on the
+		Qwiic Mux.
+		"""
+
 		# Disable all channels
 		self._i2c.writeCommand(self.address, 0x00)
-		self.enabled_channels = 0
-	
+
 	def list_channels(self):
+		"""
+		This method lists all the available channels and their current
+		configuration (enabled or disabled) on the Qwiic Mux.
+		"""
+
+		enabled_channels = self._i2c.readByte(self.address)
+
 		for x in self.available_channels:
-			if (self.enabled_channels & (1 << x)) >> x == 0:
-				print("Channel " + x + ": Disabled")
-			elif (self.enabled_channels & (1 << x)) >> x == 1:
-				print("Channel " + x + ": Enabled")
+			if (enabled_channels & (1 << x)) >> x == 0:
+				print("Channel %d: Disabled" % x)
+			elif (enabled_channels & (1 << x)) >> x == 1:
+				print("Channel %d: Enabled" % x)
 			else:
-				print("Channel " + x + ": ??? (check input)")
-		
+				print("Channel %d: ??? (check configuration)" % x)
