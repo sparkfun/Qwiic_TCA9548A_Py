@@ -46,9 +46,9 @@
 # pylint: disable=line-too-long, bad-whitespace, invalid-name
 
 """
-qwiic_TCA9548A
+qwiic_tca9548a
 =================
-Python module for the [Qwiic Mux Breakout](https://www.sparkfun.com/products/14685)
+Python module for the <a href="https://www.sparkfun.com/products/14685">Qwiic Mux Breakout</a>.
 This package can be used in conjunction with the overall [SparkFun qwiic Python Package](https://github.com/sparkfun/Qwiic_Py)
 New to qwiic? Take a look at the entire [SparkFun qwiic ecosystem](https://www.sparkfun.com/qwiic).
 """
