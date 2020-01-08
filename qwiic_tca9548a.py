@@ -48,7 +48,7 @@
 """
 qwiic_TCA9548A
 =================
-Python module for the [Qwiic Mux Brakout](https://www.sparkfun.com/products/14685)
+Python module for the [Qwiic Mux Breakout](https://www.sparkfun.com/products/14685)
 This package can be used in conjunction with the overall [SparkFun qwiic Python Package](https://github.com/sparkfun/Qwiic_Py)
 New to qwiic? Take a look at the entire [SparkFun qwiic ecosystem](https://www.sparkfun.com/qwiic).
 """
