@@ -20,9 +20,9 @@ Qwiic_TCA9548A_Py
 	
 </p>
 
-<img src="https://cdn.sparkfun.com/assets/parts/1/2/8/9/0/14685-SparkFun_Qwiic_Mux_Breakout_-_8_Channel__TCA9548A_-01.jpg"  align="right" width=300 alt="SparkFun Servo pHAT for the Raspberry Pi">
+<img src="https://cdn.sparkfun.com/assets/parts/1/5/6/8/9/16784-SparkFun_Qwiic_Mux_Breakout_V2_-_8_Channel__TCA9548A_-01.jpg"  align="right" width=300 alt="SparkFun Qwiic Mux for the Raspberry Pi">
 
-Python module for the [SparkFun Qwiic Mux Breakout - 8 Channel (TCA9548A)](https://www.sparkfun.com/products/14685).
+Python module for the [SparkFun Qwiic Mux Breakout - 8 Channel (TCA9548A)](https://www.sparkfun.com/products/16784).
 
 This package should be used in conjunction with the overall [SparkFun qwiic Python Package](https://github.com/sparkfun/Qwiic_Py). New to qwiic? Take a look at the entire [SparkFun qwiic ecosystem](https://www.sparkfun.com/qwiic).
 
