@@ -98,7 +98,7 @@ def runExample():
 	print("\nSparkFun TCA9548A Example 1\n")
 	test = qwiic_tca9548a.QwiicTCA9548A()
 
-	if test.isConnected() == False:
+	if test.is_connected() == False:
 		print("The Qwiic TCA9548A device isn't connected to the system. Please check your connection", \
 			file=sys.stderr)
 		return
