@@ -67,7 +67,7 @@ _DEFAULT_NAME = "Qwiic Mux"
 # Some devices have multiple availabel addresses - this is a list of these addresses (0x70 - 0x77).
 # NOTE: The first address in this list is considered the default I2C address for the
 # device (0x70).
-_AVAILABLE_I2C_ADDRESS = [*range(0x70,0x77 + 1)]
+_AVAILABLE_I2C_ADDRESS = range(0x70,0x77 + 1)
 
 class QwiicTCA9548A(object):
 	"""
@@ -94,7 +94,7 @@ class QwiicTCA9548A(object):
 
     #----------------------------------------------
 	# Available Channels:
-	available_channels = [*range(0,7+1)]
+	available_channels = range(0,7+1)
 
 	#----------------------------------------------
 	# Constructor
@@ -150,6 +150,15 @@ class QwiicTCA9548A(object):
 
 	connected = property(is_connected)
 
+	def get_enabled_channels(self):
+		"""
+		This method returns the enabled channels on the Qwiic Mux.
+		:return:	Enabled channels on the Qwiic Mux
+		:rtype:		Integer
+		"""
+
+		# Return enabled channels
+		return self._i2c.readByte(self.address, None) # Note, passing "None" will simply read from device rather than targetting a specific register
 
 	def enable_channels(self, enable):
 		"""
@@ -161,8 +170,7 @@ class QwiicTCA9548A(object):
 							an individual integer into a list.
 							Range- 0 to 7
 		"""
-		command = self._i2c.readByte(self.address)
-
+		command = self.get_enabled_channels()
 		# If entry is an integer and not a list; turn it into a list of (1)
 		if type(enable) is not list: enable = [ enable ]
 
@@ -188,7 +196,7 @@ class QwiicTCA9548A(object):
 							convert an individual integer into a list.
 							Range- 0 to 7
 		"""
-		command = self._i2c.readByte(self.address)
+		command = self.get_enabled_channels()
 
 		# If entry is an integer and not a list; turn it into a list of (1)
 		if type(disable) is not list: disable = [ disable ]
@@ -229,7 +237,7 @@ class QwiicTCA9548A(object):
 		configuration (enabled or disabled) on the Qwiic Mux.
 		"""
 
-		enabled_channels = self._i2c.readByte(self.address)
+		enabled_channels = self.get_enabled_channels()
 
 		for x in self.available_channels:
 			if (enabled_channels & (1 << x)) >> x == 0:

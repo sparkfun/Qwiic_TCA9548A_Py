@@ -46,11 +46,11 @@
 This example enables channels 0 and 4, pauses, and then enables channel 7.
 """
 
-import qwiic
+import qwiic_tca9548a
 import time
 
 # Initialize Constructor
-test = qwiic.QwiicTCA9548A()
+test = qwiic_tca9548a.QwiicTCA9548A()
 
 # Test Run
 #########################################
