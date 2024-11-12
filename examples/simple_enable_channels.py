@@ -1,5 +1,5 @@
 #-----------------------------------------------------------------------
-# Qwiic Mux - Example 1
+# Qwiic Mux - Simple Enable Channels Example
 #-----------------------------------------------------------------------
 #
 # Written by  SparkFun Electronics, June 2019
